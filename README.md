@@ -1,36 +1,57 @@
-# Atividade API de Músicas
+# Etapa 0
 
-Atividade para um cadastro de músicas com [FastAPI](https://fastapi.tiangolo.com/)
-e [MongoDB](https://www.mongodb.com/).
+Criação do ambiente.
 
-## Objetivo
+## Instruções da etapa
 
+Dentro da pasta `atividadesmusicas`, criaremos um
+ambiente virtual do Python ([venv](https://docs.python.org/pt-br/3/library/venv.html)) 
+o qual serão instaladas as seguintes
+bibliotecas:
 
-Nesta atividade extra iremos construir uma API em FastAPI para cadastrar músicas. O
-registro de uma música deverá conter:
+- [fastapi](https://fastapi.tiangolo.com/),
+- [uvicorn](https://www.uvicorn.org/),
+- [motor](https://motor.readthedocs.io/en/stable/).
 
-- `nome`: Nome da música. Este é um campo texto obrigatório que deverá conter no
-mínimo 2 caracteres sem espaços e no máximo 128.
-- `artista`: Artista da música. Este é um campo texto obrigatório que deverá conter
-no mínimo 2 caracteres sem espaços e no máximo 128.
-- `tempo`: Tempo em segundos da música. Este é um campo inteiro opcional.
-- `codigo`: Código da música. É um campo no formato texto e será gerado pelo
-sistema.
+## Como fazer?
 
-Mais detalhes serão apresentados adiante.
-Os registros das músicas serão salvos no banco não relacional MongoDB.
+### Criação do ambiente virtual
 
-## Apresentação das atividades
+Criando o ambiente virtual no Linux, usando o Python 3.9:
 
-As atividades estão divididas em etapas, e cada etapa está em uma _branch_ diferente
-deste repositório.
+```shell
+python3.9 -m venv venv
+```
 
-- Etapa 0: Criação do ambiente.
-- Etapa 1: Esboço das APIs.
-- Etapa 2: Organizando a aplicação.
-- Etapa 3: Conectando o banco de dados.
-- Etapa 4: Cadastro de uma nova música.
-- Etapa 5: Removendo uma música.
-- Etapa 6: Atualização da música.
-- Etapa 7: Pesquisa com filtros.
-- Etapa 8: Teste unitários.
+Criando o ambiente virtual no Windows, usando o Python 3.9, no Prompt de Comando:
+
+```batch
+python -m venv venv
+```
+
+### Ativando o ambiente virtual
+
+Para _ativar_ o ambiente virtual no Linux:
+
+```shell
+source venv/bin/activate
+```
+
+E no Windows:
+
+```batch
+venv\bin\activate
+```
+
+### Instalando os pacotes no ambiente virtual
+
+Instalando os pacotes necessários para projeto:
+
+```sh
+pip install -r requerimentos.txt
+```
+
+## Material
+
+- [pip](https://pip.pypa.io/en/stable/getting-started/).
+- [venv](https://docs.python.org/pt-br/3/library/venv.html)
