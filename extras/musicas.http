@@ -1,0 +1,86 @@
+### ************************************
+# API das músicas
+#
+
+###
+# URL
+@url=http://localhost:8000
+
+### -------------------------------------
+# Principal 
+
+###
+# (PING) Verificar aplicação web
+GET {{url}}
+
+###
+# (PING) Verificar aplicação web
+POST {{url}}
+
+{}
+
+### -------------------------------------
+# Músicas 
+
+###
+# URL base para a api de música
+@apiMusica={{url}}/api/musicas
+
+###
+# Cadastra/salva uma nova música
+POST {{apiMusica}}
+
+{
+    "nome": "Estoy Aquí",
+    "artista": "Shakira",
+    "tempo": 233
+}
+
+###
+# Informe aqui o código da música para pesquisar
+@codigoMusica=331
+
+###
+# Pesquisar música pelo código.
+GET {{apiMusica}}/mais-recentes
+
+###
+# Pesquisar todas as músicas.
+GET {{apiMusica}}
+
+###
+# Infome aqui o código da música para atualizar
+@codigoMusica=BOLA
+
+###
+# Atualizar todos os dados da música pelo código
+PUT {{apiMusica}}/NICOLE
+
+{
+    "nome": "outro nome",
+    "artista": "outro artista",
+    "tempo": 123    
+}
+
+###
+# Infome aqui o código da música para remover
+@codigoMusica=123A
+
+###
+# Remover a música pelo código
+DELETE {{apiMusica}}/ozair
+
+###
+# Etapa 1 até aqui
+###
+
+###
+# Palavra para a pesquisa que contém
+@palavraMusica=pes
+
+###
+# Pesquisar todas as músicas que contém a palavra informada
+# no nome da música.
+GET {{apiMusica}}/?nome={{palavraMusica}}
+
+###

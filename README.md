@@ -1,57 +1,47 @@
-# Etapa 0
+# Etapa 1
 
-Criação do ambiente.
+Esboço das APIs
 
 ## Instruções da etapa
 
-Dentro da pasta `atividadesmusicas`, criaremos um
-ambiente virtual do Python ([venv](https://docs.python.org/pt-br/3/library/venv.html)) 
-o qual serão instaladas as seguintes
-bibliotecas:
+Criaremos a casca de nosso servidor API REST com o FastAPI.
 
-- [fastapi](https://fastapi.tiangolo.com/),
-- [uvicorn](https://www.uvicorn.org/),
-- [motor](https://motor.readthedocs.io/en/stable/).
+Utilizando o arquivo [musicas.http](./extras/musicas.http), 
+iremos criar os esboços das APIs até a marca
+"`Etapa 1 até aqui`". Ou seja, nosso servidor REST estará somente respondendo 
+às requisições na porta **8000**, sem validar entradas e saídas.
 
 ## Como fazer?
 
-### Criação do ambiente virtual
+_Editar_/Estudar o arquivo [etapa01.py](./etapa01.py)
 
-Criando o ambiente virtual no Linux, usando o Python 3.9:
-
-```shell
-python3.9 -m venv venv
-```
-
-Criando o ambiente virtual no Windows, usando o Python 3.9, no Prompt de Comando:
-
-```batch
-python -m venv venv
-```
-
-### Ativando o ambiente virtual
-
-Para _ativar_ o ambiente virtual no Linux:
-
-```shell
-source venv/bin/activate
-```
-
-E no Windows:
-
-```batch
-venv\bin\activate
-```
-
-### Instalando os pacotes no ambiente virtual
+### Executando o servidor no ambiente virtual
 
 Instalando os pacotes necessários para projeto:
 
 ```sh
-pip install -r requerimentos.txt
+guvicorn --reload etapa01:app
 ```
+
+### Acessando a aplicação
+
+Teste a aplicação por acessar: 
+
+> http://localhost:8000
+
+Ela irá lhe dizer um "`Oi`.
+
+### Testando as APIs criadas
+
+O arquivo [musicas.http](./extras/musicas.http) é utilizado com 
+a extensão [Rest Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+do [Visual Code](https://code.visualstudio.com/).
 
 ## Material
 
-- [pip](https://pip.pypa.io/en/stable/getting-started/).
-- [venv](https://docs.python.org/pt-br/3/library/venv.html)
+- API REST, documento da :
+  - [Red Hat](https://www.redhat.com/pt-br/topics/api/what-is-a-rest-api).
+  - [AWS](https://aws.amazon.com/pt/what-is/restful-api/)
+- [FastAPI](https://fastapi.tiangolo.com/).
+- [CORS](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/CORS).
+- [CORS no FastAPI](https://fastapi.tiangolo.com/tutorial/cors/).
