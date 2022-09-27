@@ -1,56 +1,38 @@
-# Importando a biblioteca do FastAPI
-from fastapi import FastAPI
-# Recurso para CORS
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import APIRouter
 
-# Minha aplicação REST
-app = FastAPI()
-
-# Configuração para CORS
-app.add_middleware(
-    CORSMiddleware,
-    # Vou permitir todas a origens
-    # Não faça isto em casa! ;-)
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+# Minha rota API de músicas
+rota_musicas = APIRouter(
+    # Prefixo para o caminho da rota
+    prefix="/api/musicas"
 )
 
-# Rota principal, diga um oi
 
-
-@app.get("/")
-def dizer_ola():
-    return "Oi"
-
-# Cadastrando uma nova música
-
-
-@app.post("/api/musicas/")
+# Cria nova música
+@rota_musicas.post("/")
 def criar_nova_musica(musica: dict):
     print("Salvar nova musica", musica)
     return {
         "codigo": "texto"
     }
 
+# Atualiza a música pelo código.
 
-# Atualizando a música
-@app.put("/api/musicas/{codigo}")
+
+@rota_musicas.put("/{codigo}")
 def atualizar_musica(codigo: str, musica: dict):
     print("Atualizar musica", codigo, "|", musica)
     return None
 
 
-# Removendo a música
-@app.delete("/api/musicas/{codigo}")
+# Remove uma música pelo código
+@rota_musicas.delete("/{codigo}")
 def remover_musica(codigo: str):
     print("Removendo musica de codigo", codigo)
     return None
 
 
-# Pequisando a música pelo código
-@app.get("/api/musicas/{codigo}")
+# Pesquisa a música pelo código.
+@rota_musicas.get("/{codigo}")
 def pesquisar_musica_pelo_codigo(codigo: str):
     print("Pesquisar pelo codigo", codigo)
     return {
@@ -60,8 +42,8 @@ def pesquisar_musica_pelo_codigo(codigo: str):
     }
 
 
-# Pesquisando todas as músicas.
-@app.get("/api/musicas/")
+# Pesquisa por todas as músicas (sem um filtro)
+@rota_musicas.get("/")
 def pesquisar_todas_as_musicas():
     print("Pesquisar todas")
     return [
