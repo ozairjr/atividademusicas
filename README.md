@@ -25,9 +25,9 @@ Os registros das músicas serão salvos no banco não relacional MongoDB.
 As atividades estão divididas em etapas, e cada etapa está em uma _branch_ diferente
 deste repositório.
 
-- Etapa 0: Criação do ambiente.
-- Etapa 1: Esboço das APIs.
-- Etapa 2: Organizando a aplicação.
+- [Etapa 0](https://github.com/ozairjr/atividademusicas/tree/etapa00): Criação do ambiente.
+- [Etapa 1](https://github.com/ozairjr/atividademusicas/tree/etapa01): Esboço das APIs.
+- [Etapa 2](https://github.com/ozairjr/atividademusicas/tree/etapa02): Organizando a aplicação.
 - Etapa 3: Conectando o banco de dados.
 - Etapa 4: Cadastro de uma nova música.
 - Etapa 5: Removendo uma música.
