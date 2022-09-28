@@ -1,6 +1,6 @@
 # Etapa 1
 
-Esboço das APIs
+Esboço das APIs.
 
 ## Instruções da etapa
 
@@ -13,7 +13,10 @@ iremos criar os esboços das APIs até a marca
 
 ## Como fazer?
 
-_Editar_/Estudar o arquivo [etapa01.py](./etapa01.py)
+Criamos o _script_ [etapa01.py](./etapa01.py) seguindo o 
+[tutorial](https://fastapi.tiangolo.com/tutorial/) 
+do FastAPI. Neste único _script_, colocamos todas as APIs solicitadas,
+sem fazer validações, somente respodendo quaisquer requisições.
 
 ### Executando o servidor no ambiente virtual
 
@@ -29,19 +32,20 @@ Teste a aplicação por acessar:
 
 > http://localhost:8000
 
-Ela irá lhe dizer um "`Oi`.
+Ela irá lhe dizer um "`Oi`".
 
 ### Testando as APIs criadas
 
 O arquivo [musicas.http](./extras/musicas.http) é utilizado com 
 a extensão [Rest Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
-do [Visual Code](https://code.visualstudio.com/).
+do [Visual Code](https://code.visualstudio.com/). 
+Nós o utilizamos para realizar os testes com nossa API.
 
 ## Material
 
 - API REST, documento da :
   - [Red Hat](https://www.redhat.com/pt-br/topics/api/what-is-a-rest-api).
-  - [AWS](https://aws.amazon.com/pt/what-is/restful-api/)
+  - [AWS](https://aws.amazon.com/pt/what-is/restful-api/).
 - [FastAPI](https://fastapi.tiangolo.com/).
 - [CORS](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/CORS).
 - [CORS no FastAPI](https://fastapi.tiangolo.com/tutorial/cors/).

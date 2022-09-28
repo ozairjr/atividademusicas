@@ -1,3 +1,7 @@
+"""
+Script principal atendendo a etapa01.
+"""
+
 # Importando a biblioteca do FastAPI
 from fastapi import FastAPI
 # Recurso para CORS
