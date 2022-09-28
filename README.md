@@ -15,6 +15,11 @@ bibliotecas:
 
 ## Como fazer?
 
+Criamos o arquivo [requerimentos.txt](./requerimentos.txt), que contém
+os pacotes Python solicitados e suas versões. 
+
+Realizamos as próximas instruções para configurar nosso ambiente. 
+
 ### Criação do ambiente virtual
 
 Criando o ambiente virtual no Linux, usando o Python 3.9:
@@ -54,4 +59,4 @@ pip install -r requerimentos.txt
 ## Material
 
 - [pip](https://pip.pypa.io/en/stable/getting-started/).
-- [venv](https://docs.python.org/pt-br/3/library/venv.html)
+- [venv](https://docs.python.org/pt-br/3/library/venv.html).
