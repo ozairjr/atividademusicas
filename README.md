@@ -20,7 +20,7 @@ sem fazer validações, somente respodendo quaisquer requisições.
 
 ### Executando o servidor no ambiente virtual
 
-Instalando os pacotes necessários para projeto:
+Para executar o servidor FastAPI:
 
 ```sh
 guvicorn --reload etapa01:app
