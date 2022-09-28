@@ -5,9 +5,7 @@ from musicas.rest.principal_rest import rota_principal
 
 
 def configurar_rotas(app: FastAPI):
-
     # Publicando as rotas para o FastAPI.
-
     app.include_router(rota_principal)
     app.include_router(rota_musicas)
 
@@ -29,6 +27,7 @@ def criar_aplicacao_fastapi():
 
     # Configuro a aplicação FastAPI
     configurar_api_rest(app)
+    # ... e configuro suas rotas
     configurar_rotas(app)
 
     return app

@@ -1,11 +1,11 @@
 # Etapa 2
 
-Organizando a aplicação
+Organizando a aplicação.
 
 ## Instruções da etapa
 
 Vamos organizar nossa aplicação por estruturá-la em vários módulos e pacotes do Python.
-Para fins didáticos, iremos ter as seguintes pastas.
+Para fins didáticos, iremos ter as seguintes pastas:
 
 - [musicas](./musicas/): Pasta principal da aplicação. 
   - [persistencia](./musicas/persistencia/): Módulo para persistência (repositório) 
@@ -15,7 +15,7 @@ Para fins didáticos, iremos ter as seguintes pastas.
   - [rest](./musicas/regras): Módulos para de _controle_ e/ou _comunicação_ com o 
   FastAPI.
 
-Dentro desses diretório iremos ter estes arquivos:
+Dentro desses diretórios iremos ter estes arquivos:
 
 - [aplicacao.py](./musicas/aplicacao.py): Arquivo principal do projeto.
 Vamos dizer que a aplicação FastAPI _inicia_ aqui.
@@ -30,11 +30,19 @@ persistência das músicas; ou seja, é módulo responsável pela comunicação 
 
 ## Como fazer?
 
-_Editar_/Estudar os arquivos.
+Criamos as pastas e os arquivos requisitados. 
+Pegamos o conteúdo do _script_ `etapa01.py` da etapa anterior, e _espalhamos_ o seu conteúdo entre os arquivos
+[rest_conf.py](./musicas/rest/rest_conf.py), [principal_rest.py](./musicas/rest/principal_rest.py)
+e [musicas_rest.py](./musicas/rest/musicas_rest.py); e, fizemos os ajustes necessários. Dentre os
+ajustes, as rotas da API Rest agora são _definidas_ com o 
+[APIRouter](https://fastapi.tiangolo.com/tutorial/bigger-applications).
+
+Reestruturamos os arquivos e os interligamos, removemos o arquivo `etapa01.py`. Logo, navegue
+pelos novos arquivos.
 
 ### Executando o servidor no ambiente virtual
 
-Instalando os pacotes necessários para projeto:
+Executando o servidor:
 
 ```sh
 guvicorn --reload musicas.aplicacao:app
@@ -46,11 +54,11 @@ Teste a aplicação por acessar:
 
 > http://localhost:8000
 
-Ela irá lhe dizer um "`Oi`.
+Ela irá lhe dizer um "`Oi`".
 
 ### Testando as APIs criadas
 
-O arquivo [musicas.http](./extras/musicas.http) é utilizado com 
+Tal como a etapa anteriror, o arquivo [musicas.http](./extras/musicas.http) é utilizado com 
 a extensão [Rest Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 do [Visual Code](https://code.visualstudio.com/).
 

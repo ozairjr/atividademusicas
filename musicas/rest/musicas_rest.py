@@ -16,8 +16,6 @@ def criar_nova_musica(musica: dict):
     }
 
 # Atualiza a música pelo código.
-
-
 @rota_musicas.put("/{codigo}")
 def atualizar_musica(codigo: str, musica: dict):
     print("Atualizar musica", codigo, "|", musica)
