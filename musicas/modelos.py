@@ -41,3 +41,8 @@ class ModeloCodigoMusica(BaseModel):
 class ModeloGeralMusica(ModeloCodigoMusica, ModeloBaseMusica):
     # Possui todos os campos das duas classes informadas.
     ...
+
+class ModeloAtualizaMusica(ModeloBaseMusica):
+    # Modelo para atualizar a música, em que o código 
+    # é opcional.
+    codigo: Optional[str] = None

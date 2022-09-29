@@ -80,3 +80,19 @@ async def remover_uma_musica_pelo_codigo(codigo_musica: str) -> bool:
     # E aí, removeu?
     removeu = resultado.deleted_count > 0
     return removeu
+
+async def atualizar_uma_musica_pelo_codigo(codigo_musica: str, musica: dict) -> bool:
+    # 'Apenas' atualiza a música no banco.
+    
+    # Filtro de atualização
+    filtro = {
+        CampoMusica.CODIGO: codigo_musica
+    }
+    # Registro no 'formato MongoDB' para atualizar.
+    registro_atualizacao = {
+        "$set": musica
+    }
+    # Atualizando no banco de dados
+    resposta = await COLECAO_MUSICA.update_one(filtro, registro_atualizacao)
+    # Atualizou mesmo?
+    return resposta.modified_count == 1
