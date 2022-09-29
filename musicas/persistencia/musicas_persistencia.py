@@ -11,11 +11,11 @@ from .persistencia_bd import obter_colecao
 class CampoMusica:
     # Campo código da música.
     CODIGO = "codigo"
-
+    # Campo nome da música.
+    NOME = "nome"
 
 # Deixando o meu 'recurso de conversa' com coleção global.
 COLECAO_MUSICA = obter_colecao("musica")
-
 
 async def pesquisar_pelo_codigo(codigo_musica: str) -> Optional[dict]:
     # Filtro para a pesquisa
@@ -41,3 +41,24 @@ async def pesquisar_todas() -> List[dict]:
     ]
 
     return lista_todas
+
+async def pesquisar_pelo_nome(nome: str) -> Optional[dict]:
+    # Filtro para a pesquisa
+    filtro = {
+        CampoMusica.NOME: nome
+    }
+    # Consultando no banco dados a primeira música
+    # que contenha o código informado.
+    musica = await COLECAO_MUSICA.find_one(filtro)
+
+    return musica
+
+
+async def inserir_uma_nova_musica(nova_musica: dict) -> dict:
+    # Não validaremos aqui. Mais detalhes veja a 
+    # sessão do 'Cadastro da nova música no MongoDB'
+    # no arquivo README.md
+    await COLECAO_MUSICA.insert_one(nova_musica)
+    # O registro `nova_musica` recebe o atributo `_id`
+    # que é a chave no banco de dados MongoDB.
+    return nova_musica

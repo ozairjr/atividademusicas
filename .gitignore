@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Arquivo usado para esboçar testes
+esboco.py

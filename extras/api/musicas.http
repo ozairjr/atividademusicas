@@ -39,7 +39,7 @@ POST {{apiMusica}}
 
 ###
 # Pesquisar música pelo código.
-# Depois do '/' informe o código desejado.
+# Depois do '/' informe o código uuid desejado
 GET {{apiMusica}}/informe-codigo
 
 ###
@@ -49,7 +49,7 @@ GET {{apiMusica}}
 
 ###
 # Atualizar todos os dados da música pelo código
-# Ajuste o código conforme o necessário
+# Ajuste o código uuid conforme o necessário
 PUT {{apiMusica}}/codigo
 
 {

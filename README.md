@@ -1,150 +1,148 @@
-# Etapa 3
+# Etapa 4
 
-Conectando no banco de dados.
+Cadastro de uma nova música no banco de dados.
 
 ## Instruções da etapa
 
-No nosso banco de dados MongoDB, iremos criar a base de dados (_database_) "`musicasbd`".
-E as músicas serão salvas na coleção (_tabela_) "`musica`".
+Com o nosso banco de dados MongoDB, vamos agora cadastrar uma nova música nele.
+Isto implica em ajustarmos a API:
 
-Criaremos o arquivo [persistencia_bd.py](./musicas/persistencia/persistencia_bd.py)
-para termos os acessos ao banco de dados MongoDB.
+> POST /api/musicas
 
-Vamos ajustar as seguintes APIs para realizarem suas pesquisas com o banco de dados:
+para "enviar" a requisição de salvar a nova música para o banco de dados.
 
-> GET /api/musicas/{codigo}
+Antes de salvar a nova música, precisamos validar as seguintes **regras**:
 
-Na consulta da música pelo código, retornará a pesquisa realizada no banco de dados.
-Se encontrar o registro, a API retornará o código HTTP 200 e o registro. 
-Se não encontrar, a API retornará o código HTTP 404 , com a seguinte
-mensagem:
+- Uma música deve ter um nome com pelo menos 2 caracteres e no máximo 128
+caracteres.
+- Neste projeto, o nome da música deve ser único. Logo, não temos duas músicas
+com o nome "Alegria", por exemplo. Para _facilitar_, não iremos considerar as
+diferenças de letras maiúsculas e minúsculas, bem como acentuação. Logo, por 
+exemplo, os seguintes nomes de músicas são três nomes diferentes em nosso projeto:
+três são nomes diferentes para o meu projeto: 
+"`Música`", "`música`" e "`musica`".
+- Uma música deve ter um pessoa ou um grupo que é o artista da música,
+seu valor deter ter menos 2 caracteres e no máximo 128 caracteres.
+- Duas ou mais músicas podem ter o mesmo artista.
+- Uma música pode ter opcionalmente um tempo em segundos. Se o tempo for
+informado deverá ser maior que 0.
+- Antes de salvar a música no banco, iremos gerar um código único para
+música. Cada música terá o seu código único gerado pelo _sistema_.
+
+
+Na API, se conseguirmos cadastrar a música no banco de dados, iremos retornar o
+código HTTP [201](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/201)
+(Criado/_Created_), e no corpo de resposta iremos informar apenas o novo 
+código da música:
 
 ```json
 {
-  "mensagem": "Música não encontrada"
+  "codigo": "<codigo da nova música>"
 }
 ```
 
-E para a API:
+Se ao tentar cadastrar uma nova música, há outra música com o mesmo nome 
+(seguindo a regra definida), a API irá retornar o código HTTP 
+[409](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/409)
+(Conflito/_Conflict_) informando a seguinte mensagem:
 
-> GET /api/musicas
+```json
+{
+  "mensagem": "Há outra música com este nome"
+}
+```
 
-Pesquisamos todas as músicas que estão registradas no banco de dados.
-
-É digno de nota, que para esta etapa e as seguintes, qualquer acesso que
-[musicas_rest.py](./musicas/rest/musicas_rest.py) precisar fazer ao banco
-de dados, ela obrigatoriamente precisará _passar_ (ou solicitar) através
-do arquivo [musicas_regras.py](./musicas/regras/musicas_regras.py). Em suma,
-a camada `_rest` não enxerga o banco, ela precisa da intermediária 
-`_regras` para realizar seus trabalhos. 
-A camada `_rest` é quem trbalha diretamente com a camada
-`_persistencia`. 
+Quaisquer outros erros poderão ser gerados ou _interceptados_ pelo 
+próprio FastAPI.
 
 ## Como fazer?
 
-Nesta etapa há diversas atividades envolvidas.
+Continuando da etapa anterior, que já temos um banco MongoDB 
+e já o configuramos em nossa aplicação, agora vamos fazer 
+as _atividades_ para cadastrar a nova música.
 
-### Instalação do MongoDB
+### Cadastro da nova música no MongoDB
 
-Para realizarmos esta atividade, precisaremos de um banco de dados MongoDB.
-Você pode _ter_ um Mongo de três formas diferentes:
+Neste projeto, vamos considerar que todas as validações para cadastrar
+uma nova música estarão _escritas_ no arquivo
+[musicas_regras.py](./musicas/regras/musicas_regras.py). Assim sendo,
+vamos somente *salvar* a música no banco de dados na função
+`inserir_uma_nova_musica()` no arquivo 
+[musicas_persistencia.py](./musicas/persistencia/musicas_persistencia.py).
 
-1. Instalá-lo localmente. Seguem as [instruções](https://www.mongodb.com/docs/manual/installation/).
-2. Instalá-lo via [Docker](https://hub.docker.com/_/mongo). 
-Sugestão de [instruções](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-enterprise-with-docker/).
-3. Instalar e usar o Mongo _gratuito_ da [Atlas](https://www.mongodb.com/atlas/database).
+Além disso, adicionamos a função `pesquisar_pelo_nome()` que será utilizada
+pela `_regra` de validação em que precisamos verificar se o nome único da
+música.
 
-Neste projeto, escolhemos a 2ª opção. Criamos o arquivo
-[docker-compose.yml](./extras/dockermongo/docker-compose.yml), que será usado mais adiante.
+É digno de nota que poderíamos criar um índice único no MongoDB para garantir
+que ao inserir uma nova música seu nome seja único. Mas, aqui neste projeto,
+fizemos isto programaticamente (no código Python mesmo).
 
-### Configuração para o banco de dados
+### Classes modelos para música
 
-O acesso ao banco de dados é _configurado_ em uma 
-[string de conexão](https://www.mongodb.com/docs/manual/reference/connection-string/). 
-Para o nosso banco de dados local, com o Docker, a string
-de conexão é:
+O FastAPI trabalha com o [pydantic](https://pydantic-docs.helpmanual.io/)
+para validar as entradas e saídas da API através de tipos básicos do Python
+e [modelos](https://fastapi.tiangolo.com/tutorial/extra-models/) de classes. 
 
-> mongodb://localhost/musicasbd
+Modelamos nossas _classes_ para
+os registros de música no arquivo [modelos.py](./musicas/modelos.py) conforme
+a entrada ou saída da API:
 
-Para não deixarmos esta string de conexão fixa em nosso código Python, vamos colocá-la
-em um arquivo _externo_; por enquanto, está no arquivo 
-[env.txt](./extras/confenv/env.txt), associada à chave
-`BD_URL`.
+- `ModeloBaseMusica`: Modelo básico para o cadastro de uma nova música. É 
+usado na entrada da API `POST`.
+- `ModeloCodigoMusica`: Modelo em que apresenta apenas o código da música.
+É usado na saída da API `POST`.
+- `ModeloGeralMusica`: Modelo _completo_ da música com nome, artista, tempo 
+e código. Ajustamos as APIs de pesquisa para utilizá-lo.
 
-Depois, esse arquivo será copiado para a raiz do projeto com o nome de `.env`, para ser carregado pela
-bilbioteca [python-dotenv](./https://pypi.org/project/python-dotenv/) (Biblioteca
-nova para o projeto).
+Há quem associe as validações do `pydantic` como validações para a camada
+ `_rest`; mas, aqui somente para o nosso estudo, e pensando que o ele não é 
+ amarrado ao FastAPI, vamos _aproveitá-lo_ para ser nosso pré-validador para
+o cadastro da nova música e o modelo irá ser _utilizado_ também na camada
+`_regras`.
 
-Depois criamos o arquivo [configuracoes.py](./musicas/configuracoes.py) para centralizar
-estas configurações de nossa aplicação. Aproveitamos o 
-[Pydantic](https://pydantic-docs.helpmanual.io/usage/settings) para criar uma classe a
-qual carrega as nossas configurações externas; neste caso, a string de conexão com o banco
-de dados.
 
-### Conectando no MongoDB
+### Regras para nova música
 
-Utilizamos o [Motor](https://motor.readthedocs.io/en/stable/) para a nossa aplicação
-_conversar_ com o MongoDB.
+As regras definidas nesta etapa estão escritas na função `validar_nova_musica()`
+no arquivo [musicas_regras.py](./musicas/regras/musicas_regras.py). Aproveitamos
+neste projeto, que a música já é validada pelo "FastAPI", e **não** refizemos
+as validações de nome, artista e código de música (Seria bom fazer em projeto
+real). 
 
-Escrevemos o arquivo [persistencia_bd.py](./musicas/persistencia/persistencia_bd.py) 
-para ser o ponto central da aplicação para conectar e acessar as coleções do MongoDB.
-Por conta do FastAPI, vamos trabalhar com o 
-[Motor assíncrono](https://motor.readthedocs.io/en/stable/tutorial-asyncio.html); logo
-vamos ajustando a aplicação para ter funções 
-[assíncronas](https://docs.python.org/3/library/asyncio.html).
+_Escrevemos_ a regra do nome da música que deve ser único; se no processo de criar
+uma nova música encontrarmos uma com o mesmo nome lançamos uma exceção do 
+tipo `OutroRegistroExcecao`, que foi definida no arquivo 
+[regras_excecoes.py](./musicas/regras/regras_excecoes.py).
 
-### Pesquisando pelas músicas
+### Interceptando 'OutroRegistroExcecao'
 
-Para as pesquisas com banco de dados pelas músicas, editamos o arquivo 
-[musicas_persistencia.py](./musicas/persistencia/musicas_persistencia.py) para usar
-a biblioteca [Motor](https://motor.readthedocs.io/en/stable/).
+A exceção `OutroRegistroExcecao` foi interceptada no arquivo 
+[rest_conf.py](./musicas/rest/rest_conf.py) para retornar sua mensagem e código
+HTTP [409](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/409).
 
-### 'Regras' para pesquisar por código
+### Código da nova música
 
-Para a API de pesquisar a música pelo código, há a seguinte instrução:
+No arquivo [musicas_regras.py](./musicas/regras/musicas_regras.py), nós aproveitamos
+a biblioteca nativa do Python [uuid](./https://docs.python.org/3/library/uuid.html)
+para gerar o código único da música.
 
->Se não encontrar, a API retornará o código HTTP 404 , com a seguinte mensagem ...
+### Modelando e ajeitando a camada REST
 
-Logo, se uma música não é encontrada, nós teremos que retornar um código HTTP 
-[404](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/404) com uma mensagem
-informando que o produto não foi encontrado. 
+Com os [modelos](./musicas/modelos.py) para entrada e saída do 
+[pydantic](https://fastapi.tiangolo.com/tutorial/extra-models/) utilizados pelo FastAPI;
+editamos o arquivo [musicas_rest.py](./musicas/rest/musicas_rest.py) para trabalhar
+com estes modelos nas funções de criar novo produto e de pesquisa.
 
-Vamos optar por lançar uma exceção para que a camada `_rest` a trate devidamente.
-Logo, criamos o arquivo [regras_excecao.py](./musicas/regras/regras_excecoes.py) para
-conter todas as exceções das regras. E no caso da música não encontrada, iremos
-lançar a exceção do tipo `NaoEncontradoExcecao`.
-
-### Tratando as exceções de regras com o FastAPI
-
-Na atividade anterior, ao não encontrar uma determinada música, é lançada uma exceção
-do tipo `NaoEncontradoExcecao` da camada `_regras`. Podemos _orientar_ o FastAPI para 
-retornar um erro HTTP 404 ao receber esta exceção por criar um **interceptador** de
-exceções 
-([exception handler](https://fastapi.tiangolo.com/tutorial/handling-errors/#install-custom-exception-handlers)).
-
-Assim, no arquivo [ss](./musicas/rest/rest_conf.py) criamos a função
-`configurar_interceptador_excecoes()` para interceptar as exceções do tipo `NaoEncontradoExcecao`
-para retornar o erro HTTP 404 e sua mensagem.
-
-### Ajustes na camada `_rest_
-
-Ajustamos os arquivos de rotas ([musicas_rest.py](./musicas/rest/musicas_rest.py) e
-[principal_rest.py](./musicas/rest/principal_rest.py)) para possuírem somente funções assíncronas.
-
-No arquivo [musicas_rest.py](./musicas/rest/musicas_rest.py) nas _APIS_/funções de pesquisa de
-músicas, nós _utilizamos_ a camada `_regras_ para realizar as operações.
-
-### Reestruturação da pasta `extras`
-
-Como atividade extra, fizemos um orgranização na pasta [extras](./extras/):
-  - [api](./extras/api/): Conterá os arquivos de clientes Rest (extensão `.http`).
-  - [dockermusica](./extras/dockermusica/): Meus arquivos de Docker.
-  - [frontend](./extras/frontend/): Arquivos do _esboço_ do _front_ _end_ para a minha API.
+Vejam também que na decoração ([decorator](https://peps.python.org/pep-0318/))
+da função `criar_nova_musica()`, nós adicionamos o parâmetro (atributo) 
+`status_code` para retornar o código HTTP 
+[201](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/201) (Criado/_Created_).
 
 
 ## Testando
 
-Para testar a aplicação, siga as seguintes instruções.
+Para testar a aplicação, siga as seguintes instruções:
 
 ### Criação do arquivo `.env`
 
