@@ -28,9 +28,8 @@ deste repositório.
 - [Etapa 0](https://github.com/ozairjr/atividademusicas/tree/etapa00): Criação do ambiente.
 - [Etapa 1](https://github.com/ozairjr/atividademusicas/tree/etapa01): Esboço das APIs.
 - [Etapa 2](https://github.com/ozairjr/atividademusicas/tree/etapa02): Organizando a aplicação.
-- Etapa 3: Conectando o banco de dados.
-- Etapa 4: Cadastro de uma nova música.
-- Etapa 5: Removendo uma música.
-- Etapa 6: Atualização da música.
-- Etapa 7: Pesquisa com filtros.
-- Etapa 8: Teste unitários.
+- [Etapa 3](https://github.com/ozairjr/atividademusicas/tree/etapa03): Conectando o banco de dados.
+- [Etapa 4](https://github.com/ozairjr/atividademusicas/tree/etapa04): Cadastro de uma nova música.
+- [Etapa 5](https://github.com/ozairjr/atividademusicas/tree/etapa05): Removendo uma música.
+- [Etapa 6](https://github.com/ozairjr/atividademusicas/tree/etapa06): Atualização da música.
+- [Etapa 7](https://github.com/ozairjr/atividademusicas/tree/etapa07): Testes _manuais_.
