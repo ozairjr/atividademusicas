@@ -118,12 +118,12 @@ lançar a exceção do tipo `NaoEncontradoExcecao`.
 
 Na atividade anterior, ao não encontrar uma determinada música, é lançada uma exceção
 do tipo `NaoEncontradoExcecao` da camada `_regras`. Podemos _orientar_ o FastAPI para 
-retornar um erro HTTP 404 ao receber esta exceção por criar um **inteceptador** de
+retornar um erro HTTP 404 ao receber esta exceção por criar um **interceptador** de
 exceções 
 ([exception handler](https://fastapi.tiangolo.com/tutorial/handling-errors/#install-custom-exception-handlers)).
 
 Assim, no arquivo [ss](./musicas/rest/rest_conf.py) criamos a função
-`configurar_interceptador_excecoes()` para inteceptar as exceções do tipo `NaoEncontradoExcecao`
+`configurar_interceptador_excecoes()` para interceptar as exceções do tipo `NaoEncontradoExcecao`
 para retornar o erro HTTP 404 e sua mensagem.
 
 ### Ajustes na camada `_rest_
