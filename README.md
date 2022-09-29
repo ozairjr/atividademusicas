@@ -45,7 +45,7 @@ E, ao atualizarmos uma música pelo código:
 
 ```json
 {
-  "musica": "Música não encontrada"
+  "mensagem": "Música não encontrada"
 }
 ```
 
@@ -57,7 +57,7 @@ com o código
 
 ```json
 {
-  "musica": "Códigos diferentes"
+  "mensagem": "Códigos diferentes"
 }
 ```
 
@@ -68,7 +68,7 @@ banco de dados; então, a API responderá com o código
 
 ```json
 {
-  "musica": "Há outra música com este nome"
+  "mensagem": "Há outra música com este nome"
 }
 ```
 
@@ -105,8 +105,6 @@ que é diferente do que está na URL. Percebam que esta exceção
 Fizemos isto para que a aplicação retorna-se o mesmo código 
 HTTP de _Conflito_ para este tipo de exceção.
 
->>>>>lkjjkj
-
 ### Ajuste API remover
 
 Em [musicas_rest.py](./musicas/rest/musicas_rest.py) ajustamos o código
@@ -117,80 +115,4 @@ para devolver o código HTTP [202](https://developer.mozilla.org/pt-BR/docs/Web/
 
 ## Testando
 
-Tal como na etapa anterior ...
-
-### Criação do arquivo `.env`
-
-Copie o arquivo [env.txt](./extras/confenv/env.txt) para a raiz do projeto com o nome `.env`.
-
-No Linux e na raiz do projeto:
-
-```sh
-cp ./extras/confenv/env.txt .env
-```
-
-No Windows, com o Prompt de Comando na raiz do projeto:
-
-```batch
-copy .\extras\confenv\ext.txt .env
-```
-
-Altere se necessário o valor da variável no arquivo `.env`
-com a string de conexão de *seu* banco de dados.
-
-### Banco de dados MongoDB
-
-Se necessário, inicie o seu banco de dados MongoDB.
-No caso deste projeto, temos um MongoDB _com_ um Docker,
-que vamos executá-lo com o docker-compose, na raiz do projeto.
-
-No Linux, deixando o _terminal_ travado: 
-```sh
-docker-compose -f ./extras/dockermusica/docker-compose.yml up
-```
-
-### Executando o servidor
-
-Executando o servidor na raiz do projeto e _dentro_ do ambiente virtual:
-
-```sh
-uvicorn --reload musicas.aplicacao:app
-```
-
-### Acessando a aplicação
-
-Teste a aplicação por acessar: 
-
-> http://localhost:8000
-
-Ela irá lhe dizer um "`Oi`".
-
-### Testando as APIs criadas
-
-Podemos continuar nossos testes com o arquivo 
-[musicas.http](./extras/musicas.http), que é utilizado com 
-a extensão [Rest Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
-do [Visual Code](https://code.visualstudio.com/).
-
-### Frontend para teste
-
-Também podemos utilizar o rascunho de _front_ _end_.
-Para executá-lo com o Python:
-
-```sh
-cd extras
-python -m http.server 9000
-```
-
-E acesse pelo seu navegador Web:
-
-> http://localhost:9000/musicas.html
-
-## Material
-
-- [MongoDB](https://www.mongodb.com/).
-- [Motor](https://motor.readthedocs.io/en/stable/).
-- [Docker](https://docs.docker.com).
-- [docker-compose](https://docs.docker.com/compose/).
-- [Async IO no Python](https://realpython.com/async-io-python/).
-- [FastAPI](https://fastapi.tiangolo.com/tutorial/).
+Na próxima [etapa](https://github.com/ozairjr/atividademusicas/blob/etapa07/README.md) ....
