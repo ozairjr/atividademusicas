@@ -179,7 +179,7 @@ docker-compose -f ./extras/dockermusica/docker-compose.yml up
 Executando o servidor na raiz do projeto e _dentro_ do ambiente virtual:
 
 ```sh
-guvicorn --reload musicas.aplicacao:app
+uvicorn --reload musicas.aplicacao:app
 ```
 
 ### Acessando a aplicação
