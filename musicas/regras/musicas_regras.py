@@ -51,3 +51,13 @@ async def inserir_nova_musica(musica: ModeloBaseMusica) -> ModeloGeralMusica:
     musica_geral = ModeloGeralMusica(**nova_musica)
 
     return musica_geral
+
+
+async def remover_por_codigo(codigo: str):
+    # Removendo no banco e a regra de verificar
+    # se existe, vamos ver aqui no retorno
+    removeu = await musicas_persistencia.remover_uma_musica_pelo_codigo(codigo)
+
+    # "Validando" se removeu (encontrou e removeu?)
+    if not removeu:
+        raise NaoEncontradoExcecao("Música não encontrada")

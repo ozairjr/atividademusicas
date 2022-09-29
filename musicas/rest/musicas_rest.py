@@ -31,9 +31,13 @@ async def atualizar_musica(codigo: str, musica: dict):
 
 
 # Remove uma música pelo código
-@rota_musicas.delete("/{codigo}")
+@rota_musicas.delete(
+    "/{codigo}",
+    # Código HTTP infomando que foi removido
+    status_code=status.HTTP_202_ACCEPTED
+    )
 async def remover_musica(codigo: str):
-    return None
+    await musicas_regras.remover_por_codigo(codigo)
 
 
 # Pesquisa a música pelo código.
