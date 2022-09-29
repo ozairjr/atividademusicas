@@ -45,7 +45,7 @@ pelos novos arquivos.
 Executando o servidor:
 
 ```sh
-guvicorn --reload musicas.aplicacao:app
+uvicorn --reload musicas.aplicacao:app
 ```
 
 ### Acessando a aplicação
