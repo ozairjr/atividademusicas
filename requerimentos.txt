@@ -1,3 +1,4 @@
 fastapi==0.85.0
 uvicorn==0.18.3
 motor==3.0.0
+python-dotenv==0.21.0

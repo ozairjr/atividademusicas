@@ -14,7 +14,7 @@
 GET {{url}}
 
 ###
-# (PING) Verificar aplicação web
+# Post em '/' não existe.
 POST {{url}}
 
 {}
@@ -36,25 +36,21 @@ POST {{apiMusica}}
     "tempo": 233
 }
 
-###
-# Informe aqui o código da música para pesquisar
-@codigoMusica=331
 
 ###
 # Pesquisar música pelo código.
-GET {{apiMusica}}/mais-recentes
+# Depois do '/' informe o código desejado.
+GET {{apiMusica}}/informe-codigo
 
 ###
 # Pesquisar todas as músicas.
 GET {{apiMusica}}
 
-###
-# Infome aqui o código da música para atualizar
-@codigoMusica=BOLA
 
 ###
 # Atualizar todos os dados da música pelo código
-PUT {{apiMusica}}/NICOLE
+# Ajuste o código conforme o necessário
+PUT {{apiMusica}}/codigo
 
 {
     "nome": "outro nome",
@@ -63,12 +59,9 @@ PUT {{apiMusica}}/NICOLE
 }
 
 ###
-# Infome aqui o código da música para remover
-@codigoMusica=123A
-
-###
 # Remover a música pelo código
-DELETE {{apiMusica}}/ozair
+# Ajuste o código conforme o seu teste.
+DELETE {{apiMusica}}/codigo-informado
 
 ###
 # Etapa 1 até aqui

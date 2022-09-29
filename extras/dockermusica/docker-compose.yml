@@ -1,0 +1,12 @@
+# Conjunto de serviços/máquina que terei aqui
+services:
+  # Meu servidor Mongo
+  mongo:
+    # Imagem do Mongo usada e sua versão fixa.
+    image: mongo:4.4.5-bionic
+    # Nome da máquina na rede interna do docker (opcional)
+    hostname: mongo
+    # Abrindo a porta TCP da máquina docker para minha máquina
+    ports:
+      # Porta TCP no Mongo será a porta na minha máquina
+      - 27017:27017
