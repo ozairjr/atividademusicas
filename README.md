@@ -23,7 +23,7 @@ sem fazer validações, somente respodendo quaisquer requisições.
 Para executar o servidor FastAPI:
 
 ```sh
-guvicorn --reload etapa01:app
+uvicorn --reload etapa01:app
 ```
 
 ### Acessando a aplicação
