@@ -105,5 +105,5 @@ async def atualizar_por_codigo(codigo: str, musica: ModeloGeralMusica):
 
     # Atualizando no banco de dado
     await musicas_persistencia.atualizar_uma_musica_pelo_codigo(
-        codigo, musica.dict()
+        codigo, musica_para_banco
     )
