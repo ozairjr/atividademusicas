@@ -1,9 +1,7 @@
-from motor.motor_asyncio import (
-    AsyncIOMotorClient,
-    AsyncIOMotorDatabase,
-    AsyncIOMotorCollection
-)
+import asyncio
 
+from motor.motor_asyncio import (AsyncIOMotorClient, AsyncIOMotorCollection,
+                                 AsyncIOMotorDatabase)
 from musicas.configuracoes import configuracao
 
 # ---------------------------------------------------
@@ -14,6 +12,8 @@ from musicas.configuracoes import configuracao
 def iniciar_cliente_mongo() -> AsyncIOMotorClient:
     # Conectando no banco de dados
     cliente_mongo = AsyncIOMotorClient(configuracao.bd_url)
+    # Por conta dos testes... fizemos este ajuste
+    cliente_mongo.get_io_loop = asyncio.get_event_loop
     return cliente_mongo
 
 

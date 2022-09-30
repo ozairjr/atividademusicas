@@ -7,8 +7,8 @@ from pydantic import BaseModel, Field
 class ModeloBaseMusica(BaseModel):
     # Nome da música
     nome: str = Field(
-        # Valor padrão
-        None,
+        # Padrão seria
+        ...,
         # Tamanho mínimo
         min_length=3,
         # Tamanho máximo
@@ -16,8 +16,8 @@ class ModeloBaseMusica(BaseModel):
     )
     # Artista da música
     artista: str = Field(
-        # Valor padrão
-        None,
+        # Padrão seria
+        ...,
         # Tamanho mínimo
         min_length=3,
         # Tamanho máximo

@@ -1,118 +1,191 @@
-# Etapa 6
+# Etapa 8
 
-Atualização da música.
+Testes para cobertura.
 
 ## Instruções da etapa
 
-Agora iremos atualizar a música no banco de dados. Para a API:
+Com as ferramentas apropriadas, criem testes unitários e/ou de integração para _validarmos_ as APIs criadas.
 
+Para um teste de código, ou para o teste de uma função, perguntem-se:
 
-> POST /api/musicas/{codigo}
+- O código foi _escrito_ corretamente?
+- O valor que foi passado como entrada gera o resultado esperado?
+- Um valor incorreto gera um comportamento inesperado?
+- Do código que esrevi, estou _cobrindo_ grande parte dele?
 
-atualizaremos a música pelo seu código.
-
-Antes de atualizar, precisamos validar as seguintes **regras**:
-
-- Uma música deve ter um nome com pelo menos 2 caracteres e no máximo 128
-caracteres.
-- A música atualizada não pode coincidir com o nome de outra música. Não temos duas músicas
-com o nome "Alegria", por exemplo. Para _facilitar_, não iremos considerar as
-diferenças de letras maiúsculas e minúsculas, bem como acentuação. Logo, por 
-exemplo, os seguintes nomes de músicas são três nomes diferentes em nosso projeto:
-três são nomes diferentes para o meu projeto: 
-"`Música`", "`música`" e "`musica`".
-- Uma música deve ter um pessoa ou um grupo que é o artista da música,
-seu valor deter ter menos 2 caracteres e no máximo 128 caracteres.
-- Duas ou mais músicas podem ter o mesmo artista.
-- Uma música pode ter opcionalmente um tempo em segundos. Se o tempo for
-informado deverá ser maior que 0.
-- Opcionalmente, pode-se informar o código no corpo da requisição.
-- Se o código for informado no corpo da requisição; este deve ser igual
-ao código da URL de requisição ("`/{codigo}`").
-
-Notem que são quase todas as mesmas validações para 
-se cadastrar uma nova música.
-
-E, ao atualizarmos uma música pelo código:
-
-- se música existe e for atualizada; então, a API retornará o código HTTP 
-[202](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/202)
-(Aceito/_Accepted_), e sem corpo na resposta.
-
-- se música não existe; então, a aplicação irá responder com o código HTTP
-[404](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/404)
-(Não encontrado/_Not Found_) com a mensagem:
-
-```json
-{
-  "mensagem": "Música não encontrada"
-}
-```
-
-- se o código da música na URL de atualização for diferente
-do código informado no corpo da mensagem; então, a API responderá
-com o código 
-[409](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/409)
-(Conflito/_Conflict_) com a mensagem:
-
-```json
-{
-  "mensagem": "Códigos diferentes"
-}
-```
-
-- se a música atualizada coincidir em nome com outra música do 
-banco de dados; então, a API responderá com o código 
-[409](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/409)
-(Conflito/_Conflict_) com a mensagem:
-
-```json
-{
-  "mensagem": "Há outra música com este nome"
-}
-```
-
-Quaisquer outros erros poderão ser gerados ou _interceptados_ pelo 
-próprio FastAPI.
 
 ## Como fazer?
 
-Seguem os ajustes feitos no código.
+Nós **não** fizemos completamente esta etapa; somente começamos a _escrever_ alguns
+testes para algumas de nossas APIs, deixando para vocês continuarem o _estudo_
+e _criarem_ mais testes para que a cobertura chegue a pelo menos uns 90% de
+código. 📈
 
-### Atualizando a música do banco de dados
+### Requerimentos para testes
 
-Em [musicas_persistencia.py](./musicas/persistencia/musicas_persistencia.py),
-criamos a função `atualizar_uma_musica_pelo_codigo()` que somente
-irá atualizar a música no banco de dados; retornando `True` informando
-se há registros que foram atualizados.
+Para os testes unitários de nosso projeto utilizaremos a bilioteca 
+[pytest](https://docs.pytest.org/en/7.1.x/) juntamente com a biblioteca
+[pytest-cov](https://pytest-cov.readthedocs.io/en/latest/) para apresentar
+a cobertura do projeto. E como temos chamadas assíncronas com o FastAPI,
+poderemos utilizar a biblioteca auxiliar
+[pytest-asyncio](https://github.com/pytest-dev/pytest-asyncio).
 
-### Regras atualizar
+Neste projeto, escolhemos separar os requerimentos necessários para o _ambiente_ 
+de testes e os colocamos no arquivo [requerimentos-testes.txt](./requerimentos-testes.txt),
+que está "ligado internamente" com arquivo [requerimentos.txt](./requerimentos.txt).
 
+### Base dados separada
 
-Ajustamos [musicas_regras.py](./musicas/regras/musicas_regras.py)
-para aproveitar a regras e os modelos para criar um registro e 
-escrevemos o código para validar e atualizar o registro da música.
+Separamos uma base de dados (_database_) para os testes, e a string de conexão para essa base
+está _configurada_ no arquivo [env-testes.txt](./extras/confenv/env-testes.txt).
 
-Notem que a função `validar_nova_musica()` foi reescrita como 
-sendo a função `validar_musica()` para atender os processos de criar
-e atualizar as músicas.
+### 'Bug' do Motor
 
-Também criamos a exceção `CodigosDiferentesExcecao` em 
-[regras_excecoes.py](./musicas/regras/regras_excecoes.py) para os
-casos em que a pessoa passa um código no corpo da atualização
-que é diferente do que está na URL. Percebam que esta exceção
-é uma especialização (subclasse) de `OutroRegistroExcecao`. 
-Fizemos isto para que a aplicação retorna-se o mesmo código 
-HTTP de _Conflito_ para este tipo de exceção.
+De acordo com este [artigo](https://github.com/tiangolo/fastapi/issues/4473), é necessário
+fazermos um ajuste ao criarmos o cliente do Mongo com o [Motor](https://motor.readthedocs.io/en/stable/).
+Veja a linha 16 do arquivo [persistencia_bd.py](./musicas/persistencia/persistencia_bd.py).
 
-### Ajuste API remover
+### Pasta dos testes
 
-Em [musicas_rest.py](./musicas/rest/musicas_rest.py) ajustamos o código
-para devolver o código HTTP [202](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/202)
-(Aceito/_Accepted_) e chamar a função de remoção de 
-[musicas_regras.py](./musicas/regras/musicas_regras.py).
+Os códigos de testes foram centralizados na pasta [testes](./testes). Há quem estruture esta
+pasta em subpastas para negócios, casos de usos ou outra forma. 
 
+Aqui, vamos deixar apenas arquivos com um prefixo `test` seguido de um número,
+para termos uma "ordem", e em seguida  um _apresentação_ do que será testado. 
+
+### Escrevendo os testes
+
+Com base na documentação do FastAPI para [testes](https://fastapi.tiangolo.com/tutorial/testing)
+normais e [assíncronos](https://fastapi.tiangolo.com/advanced/async-tests) criamos nossos testes
+para algumas _entradas_ de nossas APIs:
+
+- [test_01_rota_prinicpal.py](./testes/test_01_rota_prinicpal.py): Testando a API principal.
+Somente um teste para ver se há um "`Oi`". 😉
+
+- [test_02_rota_musicas.py](./testes/test_02_rota_musicas.py): Testando _apenas_ o 
+cadastrar uma nova música, e o pesquisar com o código.  
+Nestes testes iremos trabalhar com 
+[fixtures](https://docs.pytest.org/en/7.1.x/fixture.html), que vamos dizer, seria um contexto 
+_preparado_ ou fornecido para um dos testes.
+Mais detalhes vejam nos comentários 
+do arquivo.
+
+### Modelos ajustados
+
+Com os testes descobrimos que modelamos incorretamente a _entrada_ para cadastro de uma nova
+música.
+
+```sh
+__test_nao_deveria_cadastrar_uma_musica_sem_nome ______
+
+    def test_nao_deveria_cadastrar_uma_musica_sem_nome():
+        # Novo registro de música
+        musica = {
+            "artista": "artista",
+            "tempo": 10,
+        }
+        # Chamando a API para cadastrar
+        resposta = cliente_app.post(PREFIXO_URL + "/", json=musica)
+        # Deu certo?
+>       assert resposta.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+E       assert 201 == 422
+E        +  where 201 = <Response [201]>.status_code
+E        +  and   422 = status.HTTP_422_UNPROCESSABLE_ENTITY
+
+testes/test_02_rota_musicas.py:101: AssertionError
+```
+
+Revisem e vejam a mudança que fizemos no arquivo 
+[modelos.py](./musicas/modelos.py).
 
 ## Testando
 
-Na próxima [etapa](https://github.com/ozairjr/atividademusicas/blob/etapa07/README.md) ....
+Para testar os testes criados 😊, fizemos o seguinte no Linux:
+
+- Instalamos os pacotes necessários para os testes
+
+```sh
+pip install -r requerimentos-testes.txt
+```
+
+- Copiamos o arquivo com a _configuração_ do banco de testes para raiz do
+projeto com o nome `.env`:
+
+```sh
+cp extras/confenv/env-testes.txt .env
+```
+
+⚠️ *Atenção*: Lembrem-se de que agora temos um `.env` para o desenvolvimento
+do projeto e outro para os testes lá na pasta [confenv](./extras/confenv/).
+
+Em um terminal separado subimos o Docker:
+
+```sh
+docker-compose -f ./extras/dockermusica/docker-compose.yml up
+```
+
+E rodamos os testes:
+
+```sh
+pytest
+```
+
+Que gerou esta saída:
+
+```log
+== test session starts ==
+platform linux -- Python 3.9.14, pytest-7.1.3, pluggy-1.0.0
+rootdir: /luizacode/atividademusicas
+plugins: cov-4.0.0, anyio-3.6.1, asyncio-0.19.0
+asyncio: mode=strict
+collected 4 items
+
+testes/test_01_rota_prinicpal.py .   [ 25%]
+testes/test_02_rota_musicas.py ...   [100%]
+== 4 passed in 0.50s ===
+```
+
+Para vermos a cobertura de código, de todos os códigos, incluindo o de testes:
+
+```sh
+pytest --cov
+```
+
+A saída foi:
+
+```
+== test session starts ==
+platform linux -- Python 3.9.14, pytest-7.1.3, pluggy-1.0.0
+rootdir: /luizacode/atividademusicas
+plugins: cov-4.0.0, anyio-3.6.1, asyncio-0.19.0
+asyncio: mode=strict
+collected 4 items
+
+testes/test_01_rota_prinicpal.py .   [ 25%]
+testes/test_02_rota_musicas.py ...   [100%]
+== 4 passed in 0.50s ===
+
+---------- coverage: platform linux, python 3.9.14-final-0 -----------
+Name                                           Stmts   Miss  Cover
+------------------------------------------------------------------
+musicas/__init__.py                                0      0   100%
+musicas/aplicacao.py                               2      0   100%
+musicas/configuracoes.py                           9      0   100%
+musicas/modelos.py                                12      0   100%
+musicas/persistencia/__init__.py                   0      0   100%
+musicas/persistencia/musicas_persistencia.py      32     12    62%
+musicas/persistencia/persistencia_bd.py           14      0   100%
+musicas/regras/musicas_regras.py                  39     14    64%
+musicas/regras/regras_excecoes.py                 13      2    85%
+musicas/rest/__init__.py                           0      0   100%
+musicas/rest/musicas_rest.py                      23      4    83%
+musicas/rest/principal_rest.py                     5      0   100%
+musicas/rest/rest_conf.py                         30      2    93%
+testes/__init__.py                                 0      0   100%
+testes/test_01_rota_prinicpal.py                   9      0   100%
+testes/test_02_rota_musicas.py                    47      0   100%
+------------------------------------------------------------------
+TOTAL                                            235     34    86%
+```
+
+Vejam que temos uma cobertura de pelo menos **86%** do código.
