@@ -1,7 +1,13 @@
 # Atividade API de Músicas
 
+<div>
+<img style="left;" src="./extras/luizacode.png">
+</div>
+
+<br/>
+
 Atividade para um cadastro de músicas com [FastAPI](https://fastapi.tiangolo.com/)
-e [MongoDB](https://www.mongodb.com/).
+e [MongoDB](https://www.mongodb.com/) em que trabalhamos no Luiza Code de Python.
 
 ## Objetivo
 
@@ -33,3 +39,8 @@ deste repositório.
 - [Etapa 5](https://github.com/ozairjr/atividademusicas/tree/etapa05): Removendo uma música.
 - [Etapa 6](https://github.com/ozairjr/atividademusicas/tree/etapa06): Atualização da música.
 - [Etapa 7](https://github.com/ozairjr/atividademusicas/tree/etapa07): Testes _manuais_.
+
+
+<div>
+<img style="right;" src="./extras/luizalabs.png">
+</div>
