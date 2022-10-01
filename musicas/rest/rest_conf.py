@@ -70,7 +70,10 @@ def configurar_api_rest(app: FastAPI):
 
 def criar_aplicacao_fastapi():
     # Crio a aplicação FastAPI
-    app = FastAPI()
+    app = FastAPI(
+        # Título da aplicação. Será usado como título do Swagger.
+        title="Músicas",
+        version="09")
 
     # Configuro a aplicação FastAPI
     configurar_api_rest(app)

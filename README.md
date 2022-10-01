@@ -1,191 +1,88 @@
-# Etapa 8
+# Etapa 9
 
-Testes para cobertura.
+Documentação OpenAPI.
 
 ## Instruções da etapa
 
-Com as ferramentas apropriadas, criem testes unitários e/ou de integração para _validarmos_ as APIs criadas.
+A [Especificação OpenAPI](https://swagger.io/specification/), também conhecida como
+documentação Swagger, padroniza uma _interface_ ou documentação para as 
+APIs RESTful. Assim, ela é usada para descrever e apresentar as APIs da aplicação para que
+outros possam saber como testá-las ou utilizá-las em aplicações _clientes_.
 
-Para um teste de código, ou para o teste de uma função, perguntem-se:
+Neste projeto iremos usar apenas o nome Swagger; por exemplo, documentação Swagger.
 
-- O código foi _escrito_ corretamente?
-- O valor que foi passado como entrada gera o resultado esperado?
-- Um valor incorreto gera um comportamento inesperado?
-- Do código que esrevi, estou _cobrindo_ grande parte dele?
+Para cada API criada neste projeto, gere a documentação Swagger dela, descrevendo-a,
+identificando suas entradas e saídas. Também, tente descrever cada objeto, registro
+e resposta da API. 
+
+Por exemplo, na API de criação de música, nós informamos como entrada um registro de 
+música com três campos, sendo que um é opcional. Na resposta de sucesso, respondemos com
+código HTTP [201](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/201)
+(Criado/_Created_) e com um registro informando o código da nova música. Mas, se há
+uma música com o mesmo nome, nós respondemos com o código HTTP 
+[409](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/409)
+(Conflito/_Conflict_).
 
 
 ## Como fazer?
 
-Nós **não** fizemos completamente esta etapa; somente começamos a _escrever_ alguns
-testes para algumas de nossas APIs, deixando para vocês continuarem o _estudo_
-e _criarem_ mais testes para que a cobertura chegue a pelo menos uns 90% de
-código. 📈
+Nesta etapa, também **não** não a completaremos; somente vamos documentar a API
+principal e a API de cadastro de uma nova música.
 
-### Requerimentos para testes
+### Criando o documento Swagger/OpenAPI
 
-Para os testes unitários de nosso projeto utilizaremos a bilioteca 
-[pytest](https://docs.pytest.org/en/7.1.x/) juntamente com a biblioteca
-[pytest-cov](https://pytest-cov.readthedocs.io/en/latest/) para apresentar
-a cobertura do projeto. E como temos chamadas assíncronas com o FastAPI,
-poderemos utilizar a biblioteca auxiliar
-[pytest-asyncio](https://github.com/pytest-dev/pytest-asyncio).
+Nativamente o FastAPI já trabalha e gera o documento Swagger, o que ele chama
+em sua documentação de 
+[Documentos interativos de API](https://fastapi.tiangolo.com/tutorial/first-steps/#interactive-api-docs).
 
-Neste projeto, escolhemos separar os requerimentos necessários para o _ambiente_ 
-de testes e os colocamos no arquivo [requerimentos-testes.txt](./requerimentos-testes.txt),
-que está "ligado internamente" com arquivo [requerimentos.txt](./requerimentos.txt).
-
-### Base dados separada
-
-Separamos uma base de dados (_database_) para os testes, e a string de conexão para essa base
-está _configurada_ no arquivo [env-testes.txt](./extras/confenv/env-testes.txt).
-
-### 'Bug' do Motor
-
-De acordo com este [artigo](https://github.com/tiangolo/fastapi/issues/4473), é necessário
-fazermos um ajuste ao criarmos o cliente do Mongo com o [Motor](https://motor.readthedocs.io/en/stable/).
-Veja a linha 16 do arquivo [persistencia_bd.py](./musicas/persistencia/persistencia_bd.py).
-
-### Pasta dos testes
-
-Os códigos de testes foram centralizados na pasta [testes](./testes). Há quem estruture esta
-pasta em subpastas para negócios, casos de usos ou outra forma. 
-
-Aqui, vamos deixar apenas arquivos com um prefixo `test` seguido de um número,
-para termos uma "ordem", e em seguida  um _apresentação_ do que será testado. 
-
-### Escrevendo os testes
-
-Com base na documentação do FastAPI para [testes](https://fastapi.tiangolo.com/tutorial/testing)
-normais e [assíncronos](https://fastapi.tiangolo.com/advanced/async-tests) criamos nossos testes
-para algumas _entradas_ de nossas APIs:
-
-- [test_01_rota_prinicpal.py](./testes/test_01_rota_prinicpal.py): Testando a API principal.
-Somente um teste para ver se há um "`Oi`". 😉
-
-- [test_02_rota_musicas.py](./testes/test_02_rota_musicas.py): Testando _apenas_ o 
-cadastrar uma nova música, e o pesquisar com o código.  
-Nestes testes iremos trabalhar com 
-[fixtures](https://docs.pytest.org/en/7.1.x/fixture.html), que vamos dizer, seria um contexto 
-_preparado_ ou fornecido para um dos testes.
-Mais detalhes vejam nos comentários 
-do arquivo.
-
-### Modelos ajustados
-
-Com os testes descobrimos que modelamos incorretamente a _entrada_ para cadastro de uma nova
-música.
+Se nós já iniciarmos a nossa aplicação:
 
 ```sh
-__test_nao_deveria_cadastrar_uma_musica_sem_nome ______
-
-    def test_nao_deveria_cadastrar_uma_musica_sem_nome():
-        # Novo registro de música
-        musica = {
-            "artista": "artista",
-            "tempo": 10,
-        }
-        # Chamando a API para cadastrar
-        resposta = cliente_app.post(PREFIXO_URL + "/", json=musica)
-        # Deu certo?
->       assert resposta.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
-E       assert 201 == 422
-E        +  where 201 = <Response [201]>.status_code
-E        +  and   422 = status.HTTP_422_UNPROCESSABLE_ENTITY
-
-testes/test_02_rota_musicas.py:101: AssertionError
+uvicorn musicas.aplicacao:app
 ```
 
-Revisem e vejam a mudança que fizemos no arquivo 
-[modelos.py](./musicas/modelos.py).
+e acessarmos 
+
+> http://localhost:8000/docs
+
+Nós veremos que o documento Swagger já está gerado
+
+![! Tela 01 Swagger](./extras/imgs/swagger01.png)
+
+
+Somente falta rever e enriquecer a documentação, tal como descrito na documentação 
+do [FastaAPI](https://fastapi.tiangolo.com/tutorial/first-steps/#openapi).
+
+No arquivo [rest_conf.py](./musicas/rest/rest_conf.py) informamos o título e
+uma versão, que escolhemos as etapas de nosso projeto para ser a nossa versão.
+
+Em seguida, ajustamos a documentação da rota principal no arquivo 
+[principal_rest.py](./musicas/rest/principal_rest.py).
+
+Já em [modelos.py](./musicas/modelos.py), revisamos e ajustamos os modelos 
+para _documentar_ com o Swagger, tal como adicionar 
+[exemplos](https://fastapi.tiangolo.com/tutorial/schema-extra-example/).
+
+E _documentamos_ e ajustamos algumas funções
+de [musicas_rest.py](./musicas/rest/musicas_rest.py), mas somente
+focalizamos na função de criar uma nova música. Nela por exemplo,
+informamos alguns dos código de 
+[retorno HTTP](https://fastapi.tiangolo.com/advanced/additional-responses/).
+
 
 ## Testando
 
-Para testar os testes criados 😊, fizemos o seguinte no Linux:
+Suba a aplicação FastAPI (Se não lembra, consulte as etapas anteriores).
 
-- Instalamos os pacotes necessários para os testes
+Acesse a documentação Swagger:
 
-```sh
-pip install -r requerimentos-testes.txt
-```
+> http://localhost:8000/docs
 
-- Copiamos o arquivo com a _configuração_ do banco de testes para raiz do
-projeto com o nome `.env`:
+Lembrem-se que _focamos_ apenas nestas para _documentar_:
 
-```sh
-cp extras/confenv/env-testes.txt .env
-```
 
-⚠️ *Atenção*: Lembrem-se de que agora temos um `.env` para o desenvolvimento
-do projeto e outro para os testes lá na pasta [confenv](./extras/confenv/).
+> http://localhost:8000/docs#/Principal/dizer_ola__get
 
-Em um terminal separado subimos o Docker:
+e 
 
-```sh
-docker-compose -f ./extras/dockermusica/docker-compose.yml up
-```
-
-E rodamos os testes:
-
-```sh
-pytest
-```
-
-Que gerou esta saída:
-
-```log
-== test session starts ==
-platform linux -- Python 3.9.14, pytest-7.1.3, pluggy-1.0.0
-rootdir: /luizacode/atividademusicas
-plugins: cov-4.0.0, anyio-3.6.1, asyncio-0.19.0
-asyncio: mode=strict
-collected 4 items
-
-testes/test_01_rota_prinicpal.py .   [ 25%]
-testes/test_02_rota_musicas.py ...   [100%]
-== 4 passed in 0.50s ===
-```
-
-Para vermos a cobertura de código, de todos os códigos, incluindo o de testes:
-
-```sh
-pytest --cov
-```
-
-A saída foi:
-
-```
-== test session starts ==
-platform linux -- Python 3.9.14, pytest-7.1.3, pluggy-1.0.0
-rootdir: /luizacode/atividademusicas
-plugins: cov-4.0.0, anyio-3.6.1, asyncio-0.19.0
-asyncio: mode=strict
-collected 4 items
-
-testes/test_01_rota_prinicpal.py .   [ 25%]
-testes/test_02_rota_musicas.py ...   [100%]
-== 4 passed in 0.50s ===
-
----------- coverage: platform linux, python 3.9.14-final-0 -----------
-Name                                           Stmts   Miss  Cover
-------------------------------------------------------------------
-musicas/__init__.py                                0      0   100%
-musicas/aplicacao.py                               2      0   100%
-musicas/configuracoes.py                           9      0   100%
-musicas/modelos.py                                12      0   100%
-musicas/persistencia/__init__.py                   0      0   100%
-musicas/persistencia/musicas_persistencia.py      32     12    62%
-musicas/persistencia/persistencia_bd.py           14      0   100%
-musicas/regras/musicas_regras.py                  39     14    64%
-musicas/regras/regras_excecoes.py                 13      2    85%
-musicas/rest/__init__.py                           0      0   100%
-musicas/rest/musicas_rest.py                      23      4    83%
-musicas/rest/principal_rest.py                     5      0   100%
-musicas/rest/rest_conf.py                         30      2    93%
-testes/__init__.py                                 0      0   100%
-testes/test_01_rota_prinicpal.py                   9      0   100%
-testes/test_02_rota_musicas.py                    47      0   100%
-------------------------------------------------------------------
-TOTAL                                            235     34    86%
-```
-
-Vejam que temos uma cobertura de pelo menos **86%** do código.
+> http://localhost:8000/docs#/M%C3%BAsicas/criar_nova_musica_api_musicas__post
