@@ -40,6 +40,7 @@ deste repositório.
 - [Etapa 6](https://github.com/ozairjr/atividademusicas/tree/etapa06): Atualização da música.
 - [Etapa 7](https://github.com/ozairjr/atividademusicas/tree/etapa07): Testes _manuais_.
 - [Etapa 8](https://github.com/ozairjr/atividademusicas/tree/etapa08): Testes unitários e de integração.
+- [Etapa 9](https://github.com/ozairjr/atividademusicas/tree/etapa09): Documentação Swagger.
 
 
 <div>
