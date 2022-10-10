@@ -45,7 +45,7 @@ source venv/bin/activate
 E no Windows:
 
 ```batch
-venv\bin\activate
+venv\Scripts\activate
 ```
 
 ### Instalando os pacotes no ambiente virtual
